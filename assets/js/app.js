@@ -34,6 +34,10 @@
         dateAdded: firebase.database.ServerValue.TIMESTAMP
       });
   
+      $("#train-name").val(" ")
+      $("#destination").val(" ")
+      $("#time").val(" ")
+      $("#frequency").val(" ")
   });
   
   // adds an event listener for when an entry is added to the database.
@@ -56,20 +60,20 @@
       //should log the freqency of the train
       console.log(snap.freq);
   
-      var firstTrainConverted = moment(snap.firstTrain, "HH:mm").subtract(1, "years");
-      console.log(firstTrainConverted);
+      var timeConverted = moment(snap.firstTrain, "HH:mm").subtract(1, "years");
+      console.log(timeConverted);
   
       var currentTime = moment();
       console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
   
-      var difference = moment().diff(moment(firstTimeConverted), "minutes");
+      var difference = moment().diff(moment(timeConverted), "minutes");
       console.log("DIFFERENCE IN TIME: " + difference);
   
       var remainder = difference % snap.freq;
       console.log(remainder);
   
       var minRemaining = snap.freq - remainder;
-      console.log("MINUTES TILL TRAIN: " + minRemaing);
+      console.log("MINUTES TILL TRAIN: " + minRemaining);
   
       var nextTrain = moment().add(minRemaining, "minutes");
       console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
@@ -83,13 +87,13 @@
       newRow.append(newDest);
       var newFreq = $("<td>" + snap.freq + "</td>");
       newRow.append(newFreq);
-      var newNextTrain = $("<td>" + nextTrain + "</td>");
+      var newNextTrain = $("<td>" + moment(nextTrain).format("HH:mm") + "</td>");
       newRow.append(newNextTrain);
       var newMinRemaining =$("<td>" + minRemaining + "</td>");
       newRow.append(newMinRemaining);
       $("#train-table").append(newRow);
   
     
-    }, function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
+    }, function(err) {
+      console.log("Errors handled: " + err.code);
     });
