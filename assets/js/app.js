@@ -59,22 +59,28 @@
 
       //should log the freqency of the train
       console.log(snap.freq);
-  
+
+      // takes the time of the first train and converts it to make sure that the time hasn't happened yet
       var timeConverted = moment(snap.firstTrain, "HH:mm").subtract(1, "years");
       console.log(timeConverted);
-  
+
+      // takes the value of current time
       var currentTime = moment();
       console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
-  
+
+      // subtracts the current time from the input time of the first train recorded to get the minutes left until the next train
       var difference = moment().diff(moment(timeConverted), "minutes");
       console.log("DIFFERENCE IN TIME: " + difference);
-  
+
+      // the remainder is needed to record how much time is left until the next train. 
       var remainder = difference % snap.freq;
       console.log(remainder);
-  
+
+      // used to calculate the time left until the next train
       var minRemaining = snap.freq - remainder;
       console.log("MINUTES TILL TRAIN: " + minRemaining);
-  
+
+      // converts the next train time to the format the user understands
       var nextTrain = moment().add(minRemaining, "minutes");
       console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
 
@@ -85,7 +91,7 @@
       newRow.append(newName);
       var newDest = $("<td>" + snap.destination + "</td>");
       newRow.append(newDest);
-      var newFreq = $("<td>" + snap.freq + "</td>");
+      var newFreq = $("<td>" + snap.freq + " minutes" + "</td>");
       newRow.append(newFreq);
       var newNextTrain = $("<td>" + moment(nextTrain).format("HH:mm") + "</td>");
       newRow.append(newNextTrain);
